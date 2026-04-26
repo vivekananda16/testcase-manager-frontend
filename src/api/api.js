@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'testcase-manager-backend-production.up.railway.app/api/testcases';
+const API_BASE_URL = 'https://testcase-manager-backend-production.up.railway.app/api/testcases';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
