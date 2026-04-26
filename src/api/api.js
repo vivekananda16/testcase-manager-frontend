@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api/testcases';
+const API_BASE_URL = 'testcase-manager-backend-production.up.railway.app/api/testcases';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
