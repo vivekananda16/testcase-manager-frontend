@@ -30,41 +30,45 @@ const App = () => {
         fetchAllTestCases();
     }, []);
 
-    const fetchAllTestCases = async () => {
-        try {
-            setLoading(true);
-            const response = await getAllTestCases();
-            setTestCases(response.data);
-            setError('');
-        } catch (err) {
-            setError('Failed to load test cases. Make sure your backend is running!');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const fetchAllTestCases = async () => {
+    try {
+        setLoading(true);
+        const response = await getAllTestCases();
+        // Make sure we always set an array
+        const data = Array.isArray(response.data) ? response.data : [];
+        setTestCases(data);
+        setError('');
+    } catch (err) {
+        setError('Failed to load test cases. Make sure your backend is running!');
+        setTestCases([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
     // ─── Search ────────────────────────────────────────
-    const handleSearch = async () => {
-        try {
-            setLoading(true);
-            if (searchTerm.trim()) {
-                const response = await searchTestCases(searchTerm);
-                setTestCases(response.data);
-            } else if (statusFilter) {
-                const response = await filterByStatus(statusFilter);
-                setTestCases(response.data);
-            } else if (priorityFilter) {
-                const response = await filterByPriority(priorityFilter);
-                setTestCases(response.data);
-            } else {
-                fetchAllTestCases();
-            }
-        } catch (err) {
-            setError('Search failed. Please try again.');
-        } finally {
-            setLoading(false);
+  const handleSearch = async () => {
+    try {
+        setLoading(true);
+        if (searchTerm.trim()) {
+            const response = await searchTestCases(searchTerm);
+            setTestCases(Array.isArray(response.data) ? response.data : []);
+        } else if (statusFilter) {
+            const response = await filterByStatus(statusFilter);
+            setTestCases(Array.isArray(response.data) ? response.data : []);
+        } else if (priorityFilter) {
+            const response = await filterByPriority(priorityFilter);
+            setTestCases(Array.isArray(response.data) ? response.data : []);
+        } else {
+            fetchAllTestCases();
         }
-    };
+    } catch (err) {
+        setError('Search failed. Please try again.');
+        setTestCases([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
     // ─── Reset Search ──────────────────────────────────
     const handleReset = () => {
